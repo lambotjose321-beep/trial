@@ -1,110 +1,682 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bristol Republic PH</title>
+$w.onReady(function () {
+  // Define button IDs
+  const buttons = [
+    "#buttonScooter",
+    "#buttonMaxiescoot",
+    "#buttonCruiser",
+    "#buttonNaked",
+    "#buttonAdventure"
+  ];
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
+  // Function to highlight the active button
+  function highlightActiveButton(activeButtonId) {
+    buttons.forEach((id) => {
+      const isActive = id === activeButtonId;
+      $w(id).style.backgroundColor = "#FFFFFF";   // white background
+      $w(id).style.color = isActive ? "#000000" : "#696565"; // black if active, gray if not
+      $w(id).style.borderColor = "#FFFFFF";
+    });
+  }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  // Set the first button as active when page loads
+  highlightActiveButton(buttons[0]);
+  $w("#carouselMotors").changeSlide(0);
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
-}
+  // Add click events to each button
+  buttons.forEach((buttonId, index) => {
+    $w(buttonId).onClick(() => {
+      $w("#carouselMotors").changeSlide(index);
+      highlightActiveButton(buttonId);
+    });
+  });
 
-body{
-  background:#0f0f0f;
-  color:white;
-}
+  // Update button highlight when slide changes (swipe or arrows)
+  $w("#carouselMotors").onChange((event) => {
+    const currentIndex = event.target.currentIndex; // current slide index
+    highlightActiveButton(buttons[currentIndex]);
+  });
+});
 
-header{
-  padding:20px;
-  text-align:center;
-  font-weight:700;
-  font-size:22px;
-  letter-spacing:2px;
-}
 
-.hero{
-  height:80vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-}
+// Comparison
 
-.hero h1{
-  font-size:40px;
-  margin-bottom:15px;
-}
+$w.onReady(function () {
+    let slideIndex1 = 0;
+    let slideIndex2 = 0;
+    const slideshow1 = $w("#container1");
+    const slideshow2 = $w("#slideshow1");
 
-.hero p{
-  max-width:500px;
-  opacity:0.7;
-  margin-bottom:30px;
-}
+    const dropdownOptions1 = {
+        scooter: [
+            { label: "ATR 160", value: "0" },
+            { label: "Fortress 160", value: "1" },
+            { label: "Invictus 160", value: "2" },
+            { label: "ADX 160", value: "3" },
+            { label: "Vantaggio", value: "4" },
+        ],
 
-.btn{
-  padding:15px 30px;
-  background:white;
-  color:black;
-  border:none;
-  border-radius:30px;
-  font-weight:600;
-  font-size:16px;
-}
+        maxiescoot: [
+            { label: "Fortress 400", value: "5" },
+            { label: "Maxie 400", value: "6" },
+        ],
 
-.btn:hover{
-  background:#ddd;
-}
+        cruiser: [
+            // { label: "SRV 200", value: "7" },
+            { label: "SRV 400", value: "8" },
+            //{ label: "SRV 600V", value: "3" },
+        ],
 
-.section{
-  padding:60px 20px;
-  text-align:center;
-}
+        naked: [
+            { label: "SRK 400", value: "10" },
+            { label: "SRK 550", value: "11" },
+            { label: "SRK 600", value: "12" }
+        ],
 
-.card{
-  background:#1a1a1a;
-  padding:30px;
-  border-radius:20px;
-  margin:15px 0;
-}
+        sports: [
+            { label: "SRK 600RC", value: "13" },
 
-</style>
-</head>
+        ],
 
-<body>
+        adventure: [
+            { label: "SRT 800SX", value: "10" },
+        ],
+    };
 
-<header>
-BRISTOL REPUBLIC PH
-</header>
+    const dropdownMapping = {
+        "ATR 160": [
+            { label: "Brand H", value: "0" },
 
-<section class="hero">
-  <h1>Premium Streetwear</h1>
-  <p>Elevate your style with high-quality urban fashion made for modern trendsetters.</p>
-  <button class="btn">Shop Now</button>
-</section>
+        ],
 
-<section class="section">
-  <div class="card">
-    <h2>New Collection</h2>
-    <p>Discover the latest drops and exclusive releases.</p>
-  </div>
-</section>
+        "Fortress 160": [
+            { label: "Brand H", value: "1" },
+            { label: "Brand Y", value: "2" },
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
+        ],
 
-</body>
-</html>
+        "Invictus 160": [
+            { label: "Brand Y", value: "3" },
+
+        ],
+
+        "ADX 160": [
+            { label: "Brand H", value: "4" },
+
+        ],
+
+        "Vantaggio": [
+            { label: "Brand V", value: "5" },
+            { label: "Brand K", value: "6" },
+
+        ],
+
+        "Fortress 400": [
+            { label: "Brand S", value: "7" },
+            { label: "Brand K", value: "8" }
+        ],
+
+        "Maxie 400": [
+            { label: "Brand S", value: "7" },
+            { label: "Brand K", value: "8" }
+        ],
+
+        "SRV 400": [{ label: "Brand H", value: "9" }],
+        "SRK 400": [
+            { label: "Brand K", value: "10" },
+            { label: "Brand K", value: "11" }
+        ],
+
+        "SRK 550": [
+            { label: "Brand K", value: "12" },
+            { label: "Brand H", value: "13" }
+        ],
+
+        "SRK 600": [
+            { label: "Brand H", value: "14" },
+            { label: "Brand S", value: "15" }
+
+        ],
+        "SRK 600RC": [
+            { label: "Brand H", value: "16" },
+            { label: "Brand K", value: "17" },
+        ],
+        "SRT 800SX": [
+            { label: "Brand H", value: "18" },
+            { label: "Brand H", value: "19" },
+            { label: "Brand Y", value: "20" },
+        ],
+    };
+
+    const _0x19352c = _0x248a;
+    (function (_0x42b95f, _0x1856f0) {
+        const _0x44fe9f = _0x248a,
+            _0x4c9e3d = _0x42b95f();
+        while (!![]) {
+            try {
+                const _0x5bc922 = -parseInt(_0x44fe9f(0x11b)) / 0x1 + parseInt(_0x44fe9f(0xfb)) / 0x2 * (-parseInt(_0x44fe9f(0x116)) / 0x3) + -parseInt(_0x44fe9f(0x119)) / 0x4 * (-parseInt(_0x44fe9f(0xf8)) / 0x5) + -parseInt(_0x44fe9f(0x101)) / 0x6 * (-parseInt(_0x44fe9f(0x106)) / 0x7) + -parseInt(_0x44fe9f(0x120)) / 0x8 * (-parseInt(_0x44fe9f(0x10a)) / 0x9) + -parseInt(_0x44fe9f(0xf9)) / 0xa + parseInt(_0x44fe9f(0x10c)) / 0xb;
+                if (_0x5bc922 === _0x1856f0) break;
+                else _0x4c9e3d['push'](_0x4c9e3d['shift']());
+            } catch (_0x26f431) { _0x4c9e3d['push'](_0x4c9e3d['shift']()); }
+        }
+    }(_0x5409, 0x223ec));
+
+    function updateDropdownsForSelection(_0x561fb4) {
+        const _0x2337af = _0x248a,
+            _0x554342 = dropdownMapping[_0x561fb4] || [];
+        $w('#dropdownContainer2')[_0x2337af(0x105)] = _0x554342, _0x554342[_0x2337af(0x11d)] > 0x0 ? ($w(_0x2337af(0x109))['selectedIndex'] = 0x0, showSlide2(parseInt(_0x554342[0x0][_0x2337af(0x102)], 0xa))) :
+            $w(_0x2337af(0x109))['selectedIndex'] = -0x1;
+    }
+
+    function _0x248a(_0x4d9825, _0x34e4ec) {
+        const _0x54098a = _0x5409();
+        return _0x248a = function (_0x248ad7, _0x4f0432) {
+            _0x248ad7 = _0x248ad7 - 0xf8;
+            let _0x1002ae = _0x54098a[_0x248ad7];
+            return _0x1002ae;
+        }, _0x248a(_0x4d9825, _0x34e4ec);
+    }
+
+    function updateDropdownsForSelection(_0x599766) {
+        const _0x148ed3 = _0x248a,
+            _0x5abbd7 = dropdownMapping[_0x599766] || [];
+        $w(_0x148ed3(0x109))[_0x148ed3(0x105)] = _0x5abbd7, _0x5abbd7[_0x148ed3(0x11d)] > 0x0 ? ($w('#dropdownContainer2')[_0x148ed3(0x107)] = 0x0, showSlide2(parseInt(_0x5abbd7[0x0]['value'], 0xa))) : $w(_0x148ed3(0x109))[_0x148ed3(0x107)] = -0x1;
+    }
+
+    function _0x5409() {
+        const _0x412453 = ['136YPrvUQ', '#buttonScootercompare', '244076hLDFJd', 'cruiser', 'length', 'adventure', 'color', '1456pmvMzW', 'maxiescoot', '8735BAvuUO', '1133940IwkieD', 'find', '7256THiabG',
+            'style', 'keys', 'backgroundColor', '#buttonNakedcompare', 'label', '1535844pIiuSL', 'value', 'onChange', 'scooter', 'options', '7UbYSBF', 'selectedIndex', 'borderColor', '#dropdownContainer2', '1197OUIoVS',
+            'buttonScootercompare', '1899392OaHmcf', 'changeSlide', '#buttonAdventureconpare', 'onClick', '#buttonCruisercompare', '#buttonSportscompare', '#000000', 'sports', '#dropdownContainer1', 'buttonMaxiescootcompare',
+            '12gmtHmP', '#buttonMaxiescootcompare', 'buttonCruisercompare'
+        ];
+        _0x5409 = function () { return _0x412453; };
+        return _0x5409();
+    }
+
+    function initializeDropdowns() {
+        const _0x17d454 = _0x248a,
+            _0x5c9b0c = Object[_0x17d454(0xfd)](dropdownMapping)[0x0];
+        _0x5c9b0c && ($w(_0x17d454(0x114))[_0x17d454(0x105)] = dropdownOptions1['scooter'],
+            $w(_0x17d454(0x114))[_0x17d454(0x107)] = 0x0, updateDropdownsForSelection(_0x5c9b0c));
+    }
+    $w('#buttonScootercompare')[_0x19352c(0x10f)](() => updateDropdown(dropdownOptions1[_0x19352c(0x104)])),
+        $w(_0x19352c(0x117))[_0x19352c(0x10f)](() => updateDropdown(dropdownOptions1[_0x19352c(0x121)])), $w(_0x19352c(0x110))[_0x19352c(0x10f)](() => updateDropdown(dropdownOptions1[_0x19352c(0x11c)])),
+        $w(_0x19352c(0xff))['onClick'](() => updateDropdown(dropdownOptions1['naked'])), $w('#buttonSportscompare')[_0x19352c(0x10f)](() => updateDropdown(dropdownOptions1[_0x19352c(0x113)])),
+        $w(_0x19352c(0x10e))[_0x19352c(0x10f)](() => updateDropdown(dropdownOptions1[_0x19352c(0x11e)])), $w('#buttonScootercompare,\x20#buttonMaxiescootcompare,\x20#buttonCruisercompare,\x20#buttonNakedcompare,\x20#buttonSportscompare,\x20#buttonAdventureconpare')[_0x19352c(0x10f)](_0x208531 => {
+            const _0x3c2ad3 = _0x19352c;
+            $w('#buttonScootercompare,\x20#buttonMaxiescootcompare,\x20#buttonCruisercompare,\x20#buttonNakedcompare,\x20#buttonSportscompare,\x20#buttonAdventureconpare')['forEach']
+                (_0x26d16c => {
+                    const _0x48d5d9 = _0x248a;
+                    _0x26d16c[_0x48d5d9(0xfc)][_0x48d5d9(0xfe)] = '', _0x26d16c['style'][_0x48d5d9(0x11f)] = '#C0C0C5', _0x26d16c[_0x48d5d9(0xfc)][_0x48d5d9(0x108)] = '';
+                });
+            const _0x53b85f = _0x208531['target']['id'];
+            if (_0x53b85f === _0x3c2ad3(0x10b)) $w(_0x3c2ad3(0x11a))[_0x3c2ad3(0xfc)][_0x3c2ad3(0xfe)] = '', $w('#buttonScootercompare')['style'][_0x3c2ad3(0x11f)] = _0x3c2ad3(0x112),
+                $w(_0x3c2ad3(0x11a))['style'][_0x3c2ad3(0x108)] = '';
+            else {
+                if (_0x53b85f === _0x3c2ad3(0x115)) $w(_0x3c2ad3(0x117))[_0x3c2ad3(0xfc)][_0x3c2ad3(0xfe)] = '',
+                    $w(_0x3c2ad3(0x117))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x11f)] = _0x3c2ad3(0x112), $w(_0x3c2ad3(0x117))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x108)] = '';
+                else {
+                    if (_0x53b85f === _0x3c2ad3(0x118))
+                        $w(_0x3c2ad3(0x110))['style'][_0x3c2ad3(0xfe)] = '', $w(_0x3c2ad3(0x110))[_0x3c2ad3(0xfc)]['color'] = '#000000', $w(_0x3c2ad3(0x110))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x108)] = '';
+                    else {
+                        if (_0x53b85f === 'buttonNakedcompare') $w(_0x3c2ad3(0xff))[_0x3c2ad3(0xfc)][_0x3c2ad3(0xfe)] = '', $w(_0x3c2ad3(0xff))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x11f)] = _0x3c2ad3(0x112), $w(_0x3c2ad3(0xff))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x108)] = '';
+                        else {
+                            if (_0x53b85f === 'buttonSportscompare')
+                                $w(_0x3c2ad3(0x111))[_0x3c2ad3(0xfc)][_0x3c2ad3(0xfe)] = '', $w('#buttonSportscompare')[_0x3c2ad3(0xfc)][_0x3c2ad3(0x11f)] = _0x3c2ad3(0x112), $w('#buttonSportscompare')[_0x3c2ad3(0xfc)][_0x3c2ad3(0x108)] = '';
+                            else _0x53b85f === 'buttonAdventureconpare' && ($w(_0x3c2ad3(0x10e))[_0x3c2ad3(0xfc)]['backgroundColor'] = '',
+                                $w('#buttonAdventureconpare')[_0x3c2ad3(0xfc)][_0x3c2ad3(0x11f)] = _0x3c2ad3(0x112), $w(_0x3c2ad3(0x10e))[_0x3c2ad3(0xfc)][_0x3c2ad3(0x108)] = '');
+                        }
+                    }
+                }
+            }
+        }), $w(_0x19352c(0x114))[_0x19352c(0x103)](_0x47bb7d => {
+            const _0x4666b7 = _0x19352c,
+                _0x2bc5dc = _0x47bb7d['target'][_0x4666b7(0x102)],
+                _0x7e2518 = $w(_0x4666b7(0x114))[_0x4666b7(0x105)][_0x4666b7(0xfa)](_0x4312d4 => _0x4312d4[_0x4666b7(0x102)] === _0x2bc5dc)?.['label'];
+            _0x7e2518 && (slideIndex1 = parseInt(_0x2bc5dc, 0xa),
+                showSlide1(slideIndex1), updateDropdownsForSelection(_0x7e2518));
+        }), $w(_0x19352c(0x109))[_0x19352c(0x103)](_0x4d6d66 => {
+            const _0x1e0241 = _0x19352c,
+                _0xb3dd37 = _0x4d6d66['target'][_0x1e0241(0x102)];
+            _0xb3dd37 !== undefined && (slideIndex2 = parseInt(_0xb3dd37, 0xa), showSlide2(slideIndex2));
+        });
+
+    function showSlide1(_0x30fb9d) { slideIndex1 = _0x30fb9d, slideshow1['changeSlide'](slideIndex1); }
+
+    function showSlide2(_0x38c4fe) {
+        const _0x257bf8 = _0x19352c;
+        slideIndex2 = _0x38c4fe, slideshow2[_0x257bf8(0x10d)](slideIndex2);
+    }
+
+    function updateDropdown(_0x30320b) {
+        const _0x4b02af = _0x19352c;
+        $w(_0x4b02af(0x114))[_0x4b02af(0x105)] = _0x30320b, $w(_0x4b02af(0x114))[_0x4b02af(0x107)] = 0x0, $w('#dropdownContainer2')[_0x4b02af(0x105)] = _0x30320b, $w(_0x4b02af(0x109))[_0x4b02af(0x107)] = 0x0;
+        const _0xa9ac64 = _0x30320b[0x0][_0x4b02af(0x100)];
+        showSlide1(parseInt(_0x30320b[0x0][_0x4b02af(0x102)], 0xa)), updateDropdownsForSelection(_0xa9ac64);
+    }
+    initializeDropdowns();
+
+});
+
+// Color
+
+$w.onReady(function () {
+
+    //ATR 160
+    $w('#buttonatr160Goldblack').onClick(() => {
+        $w('#atr160Goldblack').show();
+        $w('#atr160White').hide();
+        $w('#atr160Red').hide();
+        $w('#atr160Blackorange').hide();
+
+    })
+    $w('#buttonatr160White').onClick(() => {
+        $w('#atr160White').show();
+        $w('#atr160Goldblack').hide();
+        $w('#atr160Red').hide();
+        $w('#atr160Blackorange').hide();
+
+    })
+    $w('#buttonatr160Red').onClick(() => {
+        $w('#atr160Red').show();
+        $w('#atr160Goldblack').hide();
+        $w('#atr160White').hide();
+        $w('#atr160Blackorange').hide();
+
+    })
+    $w('#buttonatr160Blackorange').onClick(() => {
+        $w('#atr160Blackorange').show();
+        $w('#atr160Goldblack').hide();
+        $w('#atr160Red').hide();
+        $w('#atr160White').hide();
+
+    })
+
+    //Fortress 160
+
+    $w('#buttonfortress160Black').onClick(() => {
+        $w('#fortress160Black').show();
+        $w('#fortress160Gray').hide();
+        $w('#fortress160Silver').hide();
+        $w('#fortress160White').hide();
+
+    })
+    $w('#buttonfortress160Gray').onClick(() => {
+        $w('#fortress160Gray').show();
+        $w('#fortress160Black').hide();
+        $w('#fortress160Silver').hide();
+        $w('#fortress160White').hide();
+
+    })
+    $w('#buttonfortress160Silver').onClick(() => {
+        $w('#fortress160Silver').show();
+        $w('#fortress160Black').hide();
+        $w('#fortress160Gray').hide();
+        $w('#fortress160White').hide();
+
+    })
+    $w('#buttonfortress160White').onClick(() => {
+        $w('#fortress160White').show();
+        $w('#fortress160Black').hide();
+        $w('#fortress160Gray').hide();
+        $w('#fortress160Silver').hide();
+
+    })
+
+    //ADX 160
+    $w('#buttonadxRed').onClick(() => {
+        $w('#adxRed').show();
+        $w('#adxWhite').hide();
+        $w('#adxGray').hide();
+        $w('#adxBlack').hide();
+
+    })
+    $w('#buttonadxWhite').onClick(() => {
+        $w('#adxWhite').show();
+        $w('#adxRed').hide();
+        $w('#adxGray').hide();
+        $w('#adxBlack').hide();
+
+    })
+    $w('#buttonadxGray').onClick(() => {
+        $w('#adxGray').show();
+        $w('#adxRed').hide();
+        $w('#adxWhite').hide();
+        $w('#adxBlack').hide();
+
+    })
+    $w('#buttonadxBlack').onClick(() => {
+        $w('#adxBlack').show();
+        $w('#adxRed').hide();
+        $w('#adxWhite').hide();
+        $w('#adxGray').hide();
+
+    })
+
+    // Invictus 160
+    $w('#buttoninvictus160Black').onClick(() => {
+        $w('#invictus160Black').show();
+        $w('#invictus160Gray').hide();
+        $w('#invictus160White').hide();
+
+    })
+    $w('#buttoninvictus160Gray').onClick(() => {
+        $w('#invictus160Gray').show();
+        $w('#invictus160Black').hide();
+        $w('#invictus160White').hide();
+
+    })
+    $w('#buttoninvictus160White').onClick(() => {
+        $w('#invictus160White').show();
+        $w('#invictus160Black').hide();
+        $w('#invictus160Gray').hide();
+
+    })
+
+    // Vantaggio
+    $w('#buttonvantaggioRed').onClick(() => {
+        $w('#vantaggioRed').show();
+        $w('#vantaggioBlack').hide();
+        $w('#vantaggioWhite').hide();
+
+    })
+
+    $w('#buttonvantaggioBlack').onClick(() => {
+        $w('#vantaggioBlack').show();
+        $w('#vantaggioWhite').hide();
+        $w('#vantaggioRed').hide();
+
+    })
+    $w('#buttonvantaggioWhite').onClick(() => {
+        $w('#vantaggioWhite').show();
+        $w('#vantaggioBlack').hide();
+        $w('#vantaggioRed').hide();
+
+    })
+
+    //Fortress 400
+    $w('#buttonfortress400Brown').onClick(() => {
+        $w('#fortress400Brown').show();
+        $w('#fortress400Black').hide();
+        $w('#fortress400Gray').hide();
+
+    })
+    $w('#buttonfortress400Black').onClick(() => {
+        $w('#fortress400Black').show();
+        $w('#fortress400Brown').hide();
+        $w('#fortress400Gray').hide();
+
+    })
+    $w('#buttonfortress400Gray').onClick(() => {
+        $w('#fortress400Gray').show();
+        $w('#fortress400Brown').hide();
+        $w('#fortress400Black').hide();
+
+    })
+
+    // Maxie 400
+    $w('#buttonMaxiewhite').onClick(() => {
+        $w('#maxieWhite').show();
+        $w('#maxieRed').hide();
+        $w('#maxieBlue').hide();
+        $w('#maxieGray').hide();
+        $w('#maxieBlack').hide();
+
+    })
+    $w('#buttonMaxiered').onClick(() => {
+        $w('#maxieRed').show();
+        $w('#maxieWhite').hide();
+        $w('#maxieBlue').hide();
+        $w('#maxieGray').hide();
+        $w('#maxieBlack').hide();
+
+    })
+    $w('#buttonMaxieblue').onClick(() => {
+        $w('#maxieBlue').show();
+        $w('#maxieWhite').hide();
+        $w('#maxieRed').hide();
+        $w('#maxieGray').hide();
+        $w('#maxieBlack').hide();
+
+    })
+    $w('#buttonMaxiegray').onClick(() => {
+        $w('#maxieGray').show();
+        $w('#maxieWhite').hide();
+        $w('#maxieRed').hide();
+        $w('#maxieBlue').hide();
+        $w('#maxieBlack').hide();
+
+    })
+    $w('#buttonMaxieblack').onClick(() => {
+        $w('#maxieBlack').show();
+        $w('#maxieWhite').hide();
+        $w('#maxieRed').hide();
+        $w('#maxieBlue').hide();
+        $w('#maxieGray').hide();
+
+    })
+
+    //SRV 400
+
+    $w('#buttonsrvOrange').onClick(() => {
+        $w('#srv400Orange').show();
+        $w('#srv400Green').hide();
+        $w('#srv400Black').hide();
+
+    })
+    $w('#buttonsrvGreen').onClick(() => {
+        $w('#srv400Green').show();
+        $w('#srv400Orange').hide();
+        $w('#srv400Black').hide();
+
+    })
+    $w('#buttonsrvBlack').onClick(() => {
+        $w('#srv400Black').show();
+        $w('#srv400Orange').hide();
+        $w('#srv400Green').hide();
+
+    })
+
+    //SRK 400
+
+    $w('#buttonsrk400Red').onClick(() => {
+        $w('#srk400Red').show();
+        $w('#srk400Greensilver').hide();
+        $w('#srk400Blackorange').hide();
+
+    })
+    $w('#buttonsrk400Greengray').onClick(() => {
+        $w('#srk400Greensilver').show();
+        $w('#srk400Red').hide();
+        $w('#srk400Blackorange').hide();
+
+    })
+    $w('#buttonsrk400Blackorange').onClick(() => {
+        $w('#srk400Blackorange').show();
+        $w('#srk400Red').hide();
+        $w('#srk400Greensilver').hide();
+
+    })
+
+    //SRK 550
+    $w('#buttonsrk550Blackorange').onClick(() => {
+        $w('#srk550Blackorange').show();
+        $w('#srk550White').hide();
+        $w('#srk550Red').hide();
+
+    })
+    $w('#buttonsrk550White').onClick(() => {
+        $w('#srk550White').show();
+        $w('#srk550Blackorange').hide();
+        $w('#srk550Red').hide();
+
+    })
+    $w('#buttonsrk550Red').onClick(() => {
+        $w('#srk550Red').show();
+        $w('#srk550Blackorange').hide();
+        $w('#srk550White').hide();
+
+    })
+
+    // SRK 600
+    $w('#buttonsrk600Blackgold').onClick(() => {
+        $w('#srk600Blackgold').show();
+        $w('#srk600Blackorange').hide();
+        $w('#srk600Red').hide();
+
+    })
+    $w('#buttonsrk600Blackorange').onClick(() => {
+        $w('#srk600Blackorange').show();
+        $w('#srk600Blackgold').hide();
+        $w('#srk600Red').hide();
+
+    })
+    $w('#buttonsrk600Red').onClick(() => {
+        $w('#srk600Red').show();
+        $w('#srk600Blackgold').hide();
+        $w('#srk600Blackorange').hide();
+
+    })
+
+    //SRT 800SX
+
+    $w('#buttonSrt800sxblueblack').onClick(() => {
+        $w('#srt800sxBlueblack').show();
+        $w('#srt800sxRedblack').hide();
+
+    })
+    $w('#buttonSrt800sxredblack').onClick(() => {
+        $w('#srt800sxRedblack').show();
+        $w('#srt800sxBlueblack').hide();
+
+    })
+
+});
+
+$w.onReady(function () {
+    const zoomTimeline = timeline()
+        .add($w("#image78"), {
+            duration: 300, // Animation duration in milliseconds
+            scale: 1.2, // Zoom to 120% of original size
+            easing: "easeOutQuad" // Optional easing for smoother animation
+        });
+
+    $w("#image78").onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    $w("#image78").onMouseOut(() => {
+        zoomTimeline.reverse(); // Reverse the animation to zoom out
+    });
+});
+
+$w.onReady(function () {
+    const zoomTimeline = timeline()
+        .add($w("#image79"), {
+            duration: 300, // Animation duration in milliseconds
+            scale: 1.2, // Zoom to 120% of original size
+            easing: "easeOutQuad" // Optional easing for smoother animation
+        });
+
+    $w("#image79").onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    $w("#image79").onMouseOut(() => {
+        zoomTimeline.reverse(); // Reverse the animation to zoom out
+    });
+});
+
+import { timeline } from 'wix-animations-frontend';
+
+$w.onReady(function () {
+    // Select your strip
+    const strip = $w('#BristolStrip');
+
+    // Create a zoom animation timeline
+    const zoomTimeline = timeline()
+        .add(strip, {
+            duration: 300, // animation speed in ms
+            scale: 1.02, // zoom to 110%
+            easing: "easeOutQuad"
+        });
+
+    // Hover in → zoom in
+    strip.onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    // Hover out → zoom out (reverse animation)
+    strip.onMouseOut(() => {
+        zoomTimeline.reverse();
+    });
+});
+
+
+$w.onReady(function () {
+    // Select your strip
+    const strip = $w('#QJStrip');
+
+    // Create a zoom animation timeline
+    const zoomTimeline = timeline()
+        .add(strip, {
+            duration: 300, // animation speed in ms
+            scale: 1.02, // zoom to 110%
+            easing: "easeOutQuad"
+        });
+
+    // Hover in → zoom in
+    strip.onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    // Hover out → zoom out (reverse animation)
+    strip.onMouseOut(() => {
+        zoomTimeline.reverse();
+    });
+});
+
+$w.onReady(function () {
+    // Select your strip
+    const strip = $w('#KoveStrip');
+
+    // Create a zoom animation timeline
+    const zoomTimeline = timeline()
+        .add(strip, {
+            duration: 300, // animation speed in ms
+            scale: 1.02, // zoom to 110%
+            easing: "easeOutQuad"
+        });
+
+    // Hover in → zoom in
+    strip.onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    // Hover out → zoom out (reverse animation)
+    strip.onMouseOut(() => {
+        zoomTimeline.reverse();
+    });
+});
+
+$w.onReady(function () {
+    // Select your strip
+    const strip = $w('#ZontesStrip');
+
+    // Create a zoom animation timeline
+    const zoomTimeline = timeline()
+        .add(strip, {
+            duration: 300, // animation speed in ms
+            scale: 1.02, // zoom to 110%
+            easing: "easeOutQuad"
+        });
+
+    // Hover in → zoom in
+    strip.onMouseIn(() => {
+        zoomTimeline.play();
+    });
+
+    // Hover out → zoom out (reverse animation)
+    strip.onMouseOut(() => {
+        zoomTimeline.reverse();
+    });
+});
