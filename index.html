@@ -1,43 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Phone App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bristol Republic PH</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4CAF50">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      padding: 50px;
-      background: linear-gradient(to right, #4CAF50, #2196F3);
-      color: white;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      background: white;
-      color: #333;
-      border: none;
-      border-radius: 10px;
-    }
-  </style>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#0f0f0f;
+  color:white;
+}
+
+header{
+  padding:20px;
+  text-align:center;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:2px;
+}
+
+.hero{
+  height:80vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+.hero h1{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.hero p{
+  max-width:500px;
+  opacity:0.7;
+  margin-bottom:30px;
+}
+
+.btn{
+  padding:15px 30px;
+  background:white;
+  color:black;
+  border:none;
+  border-radius:30px;
+  font-weight:600;
+  font-size:16px;
+}
+
+.btn:hover{
+  background:#ddd;
+}
+
+.section{
+  padding:60px 20px;
+  text-align:center;
+}
+
+.card{
+  background:#1a1a1a;
+  padding:30px;
+  border-radius:20px;
+  margin:15px 0;
+}
+
+</style>
 </head>
+
 <body>
 
-  <h1>🚀 My Installed App</h1>
-  <p>This will work like a real mobile app.</p>
-  <button onclick="alert('App is working!')">Test Button</button>
+<header>
+BRISTOL REPUBLIC PH
+</header>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+<section class="hero">
+  <h1>Premium Streetwear</h1>
+  <p>Elevate your style with high-quality urban fashion made for modern trendsetters.</p>
+  <button class="btn">Shop Now</button>
+</section>
+
+<section class="section">
+  <div class="card">
+    <h2>New Collection</h2>
+    <p>Discover the latest drops and exclusive releases.</p>
+  </div>
+</section>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
 
 </body>
 </html>
