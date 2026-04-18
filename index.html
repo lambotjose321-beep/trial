@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Phone App</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 50px;
+      background: linear-gradient(to right, #4CAF50, #2196F3);
+      color: white;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: white;
+      color: #333;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚀 My Installed App</h1>
+  <p>This will work like a real mobile app.</p>
+  <button onclick="alert('App is working!')">Test Button</button>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+
+</body>
+</html>
